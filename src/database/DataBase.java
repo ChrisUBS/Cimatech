@@ -9,7 +9,7 @@ public class DataBase {
     // final String DB_URL = "jdbc:mysql://b9jdlktjjs9eghvwfghv-mysql.services.clever-cloud.com:3306/b9jdlktjjs9eghvwfghv";
     final String DB_URL = "jdbc:mysql://localhost:3306/cimatech";
     final String USER = "root";
-    final String PASS = "root1234";
+    final String PASS = "Lataro_2";
     private Connection conn;
     private Statement stmt;
     private ResultSet rs;
