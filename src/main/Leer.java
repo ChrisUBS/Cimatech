@@ -138,4 +138,14 @@ public class Leer {
 
         return Float.parseFloat(precio);
     }
+
+    public static int cantidadProducto(int max){
+        String cantidad = "";
+        while (cantidad.isEmpty() || !Valida.isAIntNumber(cantidad) || (!Valida.isInRange(cantidad, 0, max)))  {
+            System.out.print("Cantidad del producto que desea: ");
+            cantidad = Valida.readString();
+        }
+
+        return Integer.parseInt(cantidad);
+    }
 }
