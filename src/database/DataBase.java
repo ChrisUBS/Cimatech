@@ -6,51 +6,37 @@ import java.sql.*;
 public class DataBase {
 
     // Atributos
-    // final String DB_URL = "jdbc:mysql://b9jdlktjjs9eghvwfghv-mysql.services.clever-cloud.com:3306/b9jdlktjjs9eghvwfghv";
     final String DB_URL = "jdbc:mysql://localhost:3306/cimatech";
     final String USER = "root";
-    final String PASS = "Lataro_2";
-    private Connection conn;
-    private Statement stmt;
-    private ResultSet rs;
-    private ResultSetMetaData rsmd;
+    final String PASS = "root1234";
+    private Connection connection;
+    private Statement statement;
+    public ResultSet resultSet;
+    public ResultSetMetaData resultSetMetaData;
     
     // Constructor
     public DataBase() {
-
-        // Conectar a la base de datos
         try {
-            this.conn = DriverManager.getConnection(this.DB_URL, this.USER, this.PASS);
-            this.stmt = conn.createStatement();
+            // Conectar a la base de datos
+            while (this.connection == null) {
+                this.connection = DriverManager.getConnection(this.DB_URL, this.USER, this.PASS);
+            }
+            
+            // Crear objeto de la clase Statement para ejecutar consultas
+            this.statement = connection.createStatement();
+            
         } catch (SQLException e) {
             // e.printStackTrace();
             System.out.println("Error al conectar a la base de datos");
         }
     }
-
-    // *** Getters y Setters ***
-
-    public ResultSet getRs() {
-        return rs;
-    }
-
-    public ResultSetMetaData getRsmd() {
-        return rsmd;
-    }
-
-    public void setRs(ResultSet rs) {
-        this.rs = rs;
-    }
-
-    public void setRsmd(ResultSetMetaData rsmd) {
-        this.rsmd = rsmd;
-    }
     
-    // *** Metodos ***
+    // ** Metodos **
 
     public boolean obtener(String QUERY) {
         try {
-            this.rs = this.stmt.executeQuery(QUERY);
+            this.resultSet = this.statement.executeQuery(QUERY);
+            this.resultSetMetaData = this.resultSet.getMetaData();
             return true;
         } catch (SQLException e) {
             // e.printStackTrace();
@@ -60,7 +46,7 @@ public class DataBase {
 
     public boolean poner(String QUERY) {
         try {
-            this.stmt.executeUpdate(QUERY);
+            this.statement.executeUpdate(QUERY);
             return true;
         } catch (SQLException e) {
             // e.printStackTrace();
@@ -68,11 +54,11 @@ public class DataBase {
         }
     }
 
-    public void close() {
+    public void cerrar() {
         try {
-            if (this.rs != null) rs.close();
-            if (this.stmt != null) stmt.close();
-            if (this.conn != null) conn.close();
+            if (this.resultSet != null) resultSet.close();
+            if (this.statement != null) statement.close();
+            if (this.connection != null) connection.close();
         } catch (SQLException e) {
             // e.printStackTrace();
         }

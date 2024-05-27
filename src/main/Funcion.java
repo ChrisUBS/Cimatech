@@ -2,7 +2,6 @@ package main;
 
 // Librerías
 import java.util.Scanner;
-import database.*;
 import java.sql.SQLException;
 
 public class Funcion {
@@ -24,25 +23,31 @@ public class Funcion {
 
     // ** Metodos para el login **
 
-    public static String getRol(DataBase database, String usuario, String contrasena) throws SQLException {
+    public static String getRol(String usuario, String contrasena) throws SQLException {
         // Verificar el usuario y contraseña
-        if (database.obtener("SELECT * FROM usuarios WHERE username = '" + usuario + "' AND password = '" + contrasena + "'")) {
-            if (database.getRs().next() && database.getRs().getString("status").equals("1")) {
-                return database.getRs().getString("rol");
-            }
+        Main.database.obtener("SELECT * FROM " + Main.tabla + " WHERE username = '" + usuario + "' AND password = '" + contrasena + "'");
+
+        // Si el usuario existe y está activo
+        if (Main.database.resultSet.next() && Main.database.resultSet.getString("estatus").equals("activo")) {
+            return Main.database.resultSet.getString("rol");
         }
+
+        // Si no se encuentra el usuario o está inactivo
         return "";
     }
 
-    public static boolean registrarUsuario(DataBase database, String nombre, String apellido, String usuario, String contrasena) throws SQLException {
+    public static boolean registrarUsuario(String nombre, String apellido, String usuario, String contrasena) throws SQLException {
         // Verificar usuario
-        if (database.obtener("SELECT * FROM usuarios WHERE username = '" + usuario + "'")) {
-            if (!database.getRs().next()) {
-                // Registrar usuario
-                database.poner("INSERT INTO usuarios (rol, name, lastname, username, password) VALUES ('buyer', '" + nombre + "', '" + apellido + "', '" + usuario + "', '" + contrasena + "')");
-                return true;
-            }
+        Main.database.obtener("SELECT * FROM "+ Main.tabla + " WHERE username = '" + usuario + "'");
+
+        // Si no existe el usuario
+        if (!Main.database.resultSet.next()) {
+            // Registrar usuario
+            Main.database.poner("INSERT INTO " + Main.tabla + " (nombre, apellido, username, password) VALUES ('" + nombre + "', '" + apellido + "', '" + usuario + "', '" + contrasena + "')");
+            return true;
         }
+
+        // Si ya existe el usuario
         return false;
     }
 

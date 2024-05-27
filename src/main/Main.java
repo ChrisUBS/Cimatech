@@ -3,7 +3,6 @@ package main;
 // Librerías
 import database.*;
 import usuarios.*;
-import java.sql.SQLException;
 
 /**
  *
@@ -12,22 +11,28 @@ import java.sql.SQLException;
  */
 public class Main {
 
-    public static void main(String[] args) throws SQLException {
+    // Variables para la base de datos
+    static public DataBase database = null;
+    static public String tabla = "usuarios";
+
+    public static void main(String[] args) throws Exception {
         
         // Variable de estado
         boolean isRunning = true;
 
-        // Crear objeto de la clase DB y conectar
-        DataBase database = new DataBase();
+        // Conectar a la base de datos
+        database = new DataBase();
 
         // Loop principal
         while (isRunning) {
             Funcion.clear();
-            System.out.println("*** CIMATECH ***");
-            System.out.println("1. Iniciar sesion");
-            System.out.println("2. Registrarse");
-            System.out.println("3. Salir");
-            System.out.print("Opcion: ");
+            System.out.print(
+                "*** CIMATECH ***\n"+
+                "1. Iniciar sesión\n"+
+                "2. Registrarse\n"+
+                "3. Salir\n"+
+                "Opción: "
+            );
             String opcion = Valida.readString();
 
             switch (opcion) {
@@ -35,26 +40,23 @@ public class Main {
                     // Iniciar sesion
                     Funcion.clear();
                     System.out.println("*** CIMATECH ***");
-                    System.out.println("Iniciar sesion");
-                    String usuario = Leer.username();
-                    String contrasena = Leer.password();
+                    System.out.println("Iniciar sesión\n");
+                    String usuario = Leer.username("Usuario: ");
+                    String contrasena = Leer.password("Contraseña: ");
 
                     // Verificar usuario
-                    String rol = Funcion.getRol(database, usuario, contrasena);
+                    String rol = Funcion.getRol(usuario, contrasena);
 
                     if (!rol.equals("")) {
                         Usuario actualUsuario = null;
 
                         // Dar el rol correspondiente
-                        if (rol.equals("admin")) actualUsuario = new Admin(usuario, contrasena);
-                        if (rol.equals("buyer")) actualUsuario = new Comprador(usuario, contrasena);
-                        if (rol.equals("seller")) actualUsuario = new Vendedor(usuario, contrasena);
+                        if (rol.equals("admin")) actualUsuario = new Admin(database, usuario, contrasena);
+                        if (rol.equals("buyer")) actualUsuario = new Comprador(database, usuario, contrasena);
+                        if (rol.equals("seller")) actualUsuario = new Vendedor(database, usuario, contrasena);
 
                         // Mostrar menu del usuario
                         actualUsuario.menu();
-
-                        // System.out.println("\nUsuario encontrado");
-                        // Funcion.pause();
 
                     } else {
                         System.out.println("\nUsuario o contraseña incorrectos o usuario inactivo");
@@ -69,13 +71,13 @@ public class Main {
                     System.out.println("Registrarse");
 
                     // Leer datos
-                    String nombre = Leer.nombre();
-                    String apellido = Leer.apellido();
-                    String user = Leer.username();
-                    String pass = Leer.password();
+                    String nombre = Leer.nombre("Nombre: ");
+                    String apellido = Leer.apellido("Apellido: ");
+                    String user = Leer.username("Usuario: ");
+                    String pass = Leer.password("Contraseña: ");
 
                     // Insertar usuario
-                    if (Funcion.registrarUsuario(database, nombre, apellido, user, pass)) {
+                    if (Funcion.registrarUsuario(nombre, apellido, user, pass)) {
                         System.out.println("\nUsuario registrado correctamente");
                     } else {
                         System.out.println("\nEl usuario ya existe");
@@ -98,6 +100,6 @@ public class Main {
         }
 
         // Cerrar la conexion
-        database.close();
+        database.cerrar();
     }
 }
