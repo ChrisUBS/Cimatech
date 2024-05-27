@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class Valida {
 
-    // **Metodos generales de validacion**
+    // ** Metodos generales de validacion **
 
     static Scanner read = new Scanner(System.in);
     public static String readString() {
