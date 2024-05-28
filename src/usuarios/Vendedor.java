@@ -60,7 +60,7 @@ public class Vendedor extends Usuario {
 
                     // Leer datos y guardar en lista
                     ArrayList<String> datos = new ArrayList<String>();
-                    datos.add("nombre");
+                    datos.add("producto");
                     datos.add(Leer.nombreProducto("Nombre: "));
                     datos.add("estatus");
                     datos.add(Leer.status("Estatus: "));
