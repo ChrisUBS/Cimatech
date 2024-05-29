@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `cimatech` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `cimatech`;
 -- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
 -- Host: localhost    Database: cimatech
@@ -16,32 +18,32 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `usuarios`
+-- Table structure for table `productos`
 --
 
-DROP TABLE IF EXISTS `usuarios`;
+DROP TABLE IF EXISTS `productos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `usuarios` (
-  `id_users` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `productos` (
+  `id_producto` int NOT NULL AUTO_INCREMENT,
   `estatus` varchar(45) NOT NULL DEFAULT 'activo',
-  `rol` varchar(45) NOT NULL DEFAULT 'buyer',
-  `nombre` varchar(45) NOT NULL,
-  `apellido` varchar(45) NOT NULL,
-  `username` varchar(45) NOT NULL,
-  `password` varchar(45) NOT NULL,
-  PRIMARY KEY (`id_users`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `producto` varchar(45) NOT NULL,
+  `tipo` varchar(45) NOT NULL,
+  `cantidad` int NOT NULL,
+  `precio` float NOT NULL,
+  PRIMARY KEY (`id_producto`),
+  UNIQUE KEY `id_producto_UNIQUE` (`id_producto`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `usuarios`
+-- Dumping data for table `productos`
 --
 
-LOCK TABLES `usuarios` WRITE;
-/*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (1,'activo','admin','admin','admin','admin','admin1234'),(2,'activo','seller','Fernando','Marquez','juvaz','hola1234'),(3,'activo','buyer','chris','bonilla','chrisubs','hola1234'),(4,'activo','buyer','eduardo','becerra','edubc','hola1234'),(5,'activo','buyer','Carlos','Juarez','carlos','hola1234'),(6,'activo','seller','Maria','Hernandez','mariher','hola1234'),(7,'activo','buyer','Leonardo','Garcia','leo','hola1234'),(8,'activo','seller','Juan','Bonilla','jubo','1234'),(9,'activo','admin','Christian','Bonilla','cubs','1234'),(10,'activo','buyer','Mariano','Matamoros','mama','1234'),(11,'inactivo','seller','Perla','Lara','pela','pela1234'),(12,'activo','buyer','Maria','DB','madb','hola1234'),(13,'inactivo','admin','naye','bonilla','naye1234','naye4321');
-/*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
+LOCK TABLES `productos` WRITE;
+/*!40000 ALTER TABLE `productos` DISABLE KEYS */;
+INSERT INTO `productos` VALUES (1,'activo','Intel i10','componente',2,3000),(2,'activo','Laptop Asus','computadora',3,10000),(3,'activo','Teclado Logitech','periferico',4,2500),(4,'activo','SSD 500 GB','componente',10,2000),(5,'activo','Mouse Logitech','periferico',4,1500),(6,'activo','Intel i7','componente',6,3000),(7,'activo','USB 128GB','componente',10,200),(8,'inactivo','Camara','periferico',0,520.5),(9,'activo','Laptop Acer Helios 300','computadora',3,12500.5),(10,'inactivo','Camara 4k','periferico',2,5000);
+/*!40000 ALTER TABLE `productos` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -53,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-28 20:23:58
+-- Dump completed on 2024-05-29  9:16:41
