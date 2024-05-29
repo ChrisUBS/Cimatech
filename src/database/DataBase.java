@@ -6,9 +6,9 @@ import java.sql.*;
 public class DataBase {
 
     // Atributos
-    final String DB_URL = "jdbc:mysql://localhost:3306/cimatech";
+    final String DB_URL = "jdbc:mysql://localhost:3306/CimaTech";
     final String USER = "root";
-    final String PASS = "root1234";
+    final String PASS = "Lataro_2";
     private Connection connection;
     private Statement statement;
     public ResultSet resultSet;
