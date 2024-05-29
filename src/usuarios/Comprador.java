@@ -94,6 +94,9 @@ public class Comprador extends Usuario {
 
     //*Metodo que muestra los productos que se hayan agregado al carrito de compras
     public boolean mostrarCarrito(ArrayList<ArrayList<String>> productos , ArrayList<String> nombres, ArrayList<Integer> cantidad){
+
+        float total = 0; //Variable que almacenara el total de la compra
+
         if (!carritoVacio(nombres)) {
             int numeroIncremento=1;
             //Ciclo parar recorrer los productos del carrito
@@ -101,18 +104,29 @@ public class Comprador extends Usuario {
                 //Ciclo para recorrer toda la lista de productos
                 for (int j = 0; j < productos.size(); j++) {
 
-                    //En caso de que se encuentre el producto del carrito en la lista de productos, se imprime toda la ifo
+                    //En caso de que se encuentre el producto del carrito en la lista de productos, se imprime toda la info
                     if (nombres.get(i).equals(productos.get(j).get(1))) {
                         System.out.println("\nProducto seleccionado #" + numeroIncremento);
                         System.out.println("Nombre: " + productos.get(j).get(1));
                         System.out.println("Tipo: " + productos.get(j).get(2));
                         System.out.println("Cantidad: " + cantidad.get(i));
                         System.out.println("Precio: $" + productos.get(j).get(4));
+                        System.out.println("Subtotal: $" + (Float.parseFloat(productos.get(j).get(4))*cantidad.get(i)));
+                        total += Float.parseFloat(productos.get(j).get(4))*cantidad.get(i);
         
                         numeroIncremento++;
                     }
+
                 }
             } 
+
+            if (numeroIncremento!=1) {
+                System.out.println("\nTotal a pagar: $" + total);
+                System.out.println("");
+
+                return true;
+            }
+
             return true;  
         }
         //Solo se regresa un false en caso de que el carrito este vacio
@@ -157,7 +171,7 @@ public class Comprador extends Usuario {
         {
             int indice = existenciaCarrito(nombres, nombre);
             //Si el indice no es -2 significa que el producto se encontro, entonces se elimina el producto
-            if (indice!=2) {
+            if (indice!=-2) {
                 nombres.remove(indice);
                 cantidad.remove(indice);
             }else{
@@ -206,11 +220,14 @@ public class Comprador extends Usuario {
 
         // Imprimir elementos
         while (database.resultSet.next()) {
-            elementoActivo = true;
+
+            if (database.resultSet.getString("estatus").equals("inactivo")) continue;
             System.out.println("");
 
             for (int i = columnaInicio; i <= database.resultSetMetaData.getColumnCount(); i++) {
-                if (!database.resultSet.getString("estatus").equals("inactivo")) {
+                if (database.resultSet.getString("estatus").equals("activo")) {
+                    elementoActivo = true;
+
                     String columnValue = database.resultSet.getString(i);
                     
                     if (database.resultSetMetaData.getColumnTypeName(i).equals("FLOAT")) {
@@ -222,6 +239,8 @@ public class Comprador extends Usuario {
 
             }
         }
+
+        System.out.println("");
 
         if (!elementoActivo) return false;
 
@@ -269,11 +288,11 @@ public class Comprador extends Usuario {
                 case "1":
                     try {
                         //Si imprimir tabla regresa un false significa que no hay productos
-                        if (!imprimirTabla("productos", 2)) {
+                        if (!imprimirTabla("productos", 3)) {
                             System.out.println("\nNo hay productos");
                         } else {
                             System.out.println("**COMPRAR PRODUCTO");
-                            nombre = Leer.nombreProducto("Producto que deseas añadir: ");
+                            nombre = Leer.nombreProducto("Nombre del producto que deseas añadir: ");
                             cantidad = Integer.parseInt(Leer.cantidad("Cantidad que deseas del producto: "));
                             //Si al asignar un producto se retorna un false, significa que no se encontro el producto o se supero el limite de cantidad
                             if (!asignarProducto(productos, nombre_productos, cantidad_productos, nombre, cantidad)) {
